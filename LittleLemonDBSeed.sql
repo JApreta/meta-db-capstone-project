@@ -11,10 +11,13 @@ VALUES
     ('Manager A', 'Manager', 50000),
     ('Waiter B', 'Waiter', 25000);
 
-INSERT INTO Bookings (date, tableNumber, customerID, staffID)
+INSERT INTO Bookings (bookingID, date, tableNumber, customerID, staffID)
 VALUES
-    ('2023-08-30', 5, 1, 1),
-    ('2023-08-31', 8, 2, 2);
+    (1, '2022-10-10', 5, 1, 1),
+    (2, '2022-11-12', 3, 3, 2),
+    (3, '2022-10-11', 2, 2, 1),
+    (4, '2022-10-13', 2, 1, 2);
+
 
 INSERT INTO Orders (orderDate, quantity, totalCost, customerID)
 VALUES
@@ -35,4 +38,5 @@ VALUES
     (1, 1),
     (1, 2),
     (2, 2);
+
 
