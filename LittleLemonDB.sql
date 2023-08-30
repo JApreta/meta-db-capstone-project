@@ -14,6 +14,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema LittleLemonDB
 -- -----------------------------------------------------
+
 CREATE SCHEMA IF NOT EXISTS `LittleLemonDB` DEFAULT CHARACTER SET utf8 ;
 USE `LittleLemonDB` ;
 
@@ -51,12 +52,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `LittleLemonDB`.`Bookings` ;
 
 CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Bookings` (
-  `bookingID` INT NOT NULL AUTO_INCREMENT,
+  `bookingID` INT NOT NULL AUTO_INCREMENT Primary Key,
   `date` DATE NOT NULL,
   `tableNumber` INT NOT NULL,
   `customerID` INT NOT NULL,
   `staffID` INT NOT NULL,
-  PRIMARY KEY (`bookingID`, `customerID`, `staffID`),
   INDEX `fk_Bookings_Customers1_idx` (`customerID` ASC) VISIBLE,
   INDEX `fk_Bookings_Staff1_idx` (`staffID` ASC) VISIBLE,
   CONSTRAINT `fk_Bookings_Customers1`
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Orders` (
   `quantity` INT NOT NULL,
   `totalCost` DECIMAL(5,2) NOT NULL,
   `customerID` INT NOT NULL,
-  PRIMARY KEY (`orderID`, `customerID`),
+  PRIMARY KEY (`orderID`),
   INDEX `fk_Orders_Customers1_idx` (`customerID` ASC) VISIBLE,
   CONSTRAINT `fk_Orders_Customers1`
     FOREIGN KEY (`customerID`)
@@ -102,8 +102,7 @@ CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Order_Delivery_Status` (
   `deliveryDate` DATE NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   `orderID` INT NOT NULL,
-  `orderID` INT NOT NULL,
-  PRIMARY KEY (`orderID`, `orderID`),
+  PRIMARY KEY (`orderID`),
   INDEX `fk_Order_Delivery_Status_Orders1_idx` (`orderID` ASC) VISIBLE,
   CONSTRAINT `fk_Order_Delivery_Status_Orders1`
     FOREIGN KEY (`orderID`)
@@ -135,18 +134,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `LittleLemonDB`.`Orders_has_Menu` ;
 
 CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Orders_has_Menu` (
-  `Orders_orderID` INT NOT NULL,
-  `Menu_id` INT NOT NULL,
-  PRIMARY KEY (`Orders_orderID`, `Menu_id`),
-  INDEX `fk_Orders_has_Menu_Menu1_idx` (`Menu_id` ASC) VISIBLE,
-  INDEX `fk_Orders_has_Menu_Orders1_idx` (`Orders_orderID` ASC) VISIBLE,
+  `orderID` INT NOT NULL,
+  `menuID` INT NOT NULL,
+  PRIMARY KEY (`orderID`, `menuId`),
+  INDEX `fk_Orders_has_Menu_Menu1_idx` (`menuId` ASC) VISIBLE,
+  INDEX `fk_Orders_has_Menu_Orders1_idx` (`orderID` ASC) VISIBLE,
   CONSTRAINT `fk_Orders_has_Menu_Orders1`
-    FOREIGN KEY (`Orders_orderID`)
+    FOREIGN KEY (`orderID`)
     REFERENCES `LittleLemonDB`.`Orders` (`orderID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Orders_has_Menu_Menu1`
-    FOREIGN KEY (`Menu_id`)
+    FOREIGN KEY (`menuId`)
     REFERENCES `LittleLemonDB`.`Menu` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
