@@ -48,10 +48,8 @@ DELIMITER //
 CREATE PROCEDURE CancelOrder(IN orderIDParam INT)
 BEGIN
     DECLARE conformation VARCHAR(100);
-    
     DELETE FROM Orders
     WHERE orderID = orderIDParam;
-    
     SET conformation = CONCAT('order ', orderIDParam, ' is cancelled');
     SELECT conformation AS confirmation;
 END //
@@ -103,5 +101,43 @@ BEGIN
 END //
 DELIMITER ;
 CALL AddValidBooking('2022-10-10', 5);
+
+
+DELIMITER //
+CREATE PROCEDURE AddBooking(IN bookingIDParam INT,IN customerIDParam INT,IN bookingDateParam DATE,IN tableNumberParam INT)
+BEGIN
+DECLARE bookingStatus VARCHAR(100);
+	SET bookingStatus ='New Booking Added';
+    INSERT INTO Bookings (bookingID, date, tableNumber, customerID, staffID)
+    VALUES (bookingIDParam, bookingDateParam, tableNumberParam, customerIDParam, 1); -- Assuming default staff ID
+	select bookingStatus as "Confirmation";
+END //
+DELIMITER ;
+CALL AddBooking(8,3,"2022-12-31",4);
+drop procedure updateBooking
+DELIMITER //
+CREATE PROCEDURE updateBooking(IN bookingIDParam INT,IN bookingDateParam DATE)
+BEGIN
+DECLARE bookingStatus VARCHAR(100);
+	SET bookingStatus = concat('Booking ',bookingIDParam, ' Updated');
+    Update Bookings SET  date=bookingDateParam where bookingID=bookingIDParam;
+   	select bookingStatus as "Confirmation";
+END //
+DELIMITER ;
+CALL updateBooking(8,"2023-01-31");
+
+DELIMITER //
+CREATE PROCEDURE CancelBooking(IN bookingIDParam INT)
+BEGIN
+    DECLARE confirmation VARCHAR(100);
+    DELETE FROM Bookings
+    WHERE bookingID = bookingIDParam;
+    SET confirmation = CONCAT('Booking ', bookingIDParam, ' cancelled');
+    SELECT confirmation AS confirmation;
+END //
+DELIMITER ;
+
+call CancelBooking(8)
+
 
 
